@@ -26,4 +26,11 @@ public class UnitOfMeasure {
         this.uof = uof;
     }
 
+    @Override
+    public String toString() {
+        return "UnitOfMeasure{" +
+                "id=" + id +
+                ", uof='" + uof + '\'' +
+                '}';
+    }
 }
