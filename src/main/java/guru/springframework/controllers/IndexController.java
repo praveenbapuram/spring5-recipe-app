@@ -1,32 +1,35 @@
 package guru.springframework.controllers;
 
-import guru.springframework.domain.Category;
-import guru.springframework.domain.UnitOfMeasure;
-import guru.springframework.repositories.CategoryRepository;
-import guru.springframework.repositories.UnitOfMeasureRepository;
+import guru.springframework.services.CatergoryService;
+import guru.springframework.services.RecipeService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Optional;
 
 @Controller
 public class IndexController {
 
-  private CategoryRepository categoryRepository;
-    private UnitOfMeasureRepository unitOfMeasureRepository;
+    private final RecipeService recipeService;
+    private final CatergoryService catergoryService;
 
-    public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.categoryRepository = categoryRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
+
+    public IndexController(RecipeService recipeService, CatergoryService catergoryService) {
+        this.recipeService = recipeService;
+        this.catergoryService = catergoryService;
     }
+
 
     @RequestMapping({"index","index.html","/",""})
-    public String getIndexPage(){
-        Optional<Category> category= categoryRepository.findByDescription("American");
-        Optional<UnitOfMeasure> unitOfMeasure =unitOfMeasureRepository.findByUof("Teaspoon");
-
-        System.out.println("Category is : " +category);
-        System.out.println("Unit Of Measure  is : " +unitOfMeasure);
+    public String getIndexPage(Model model){
+        model.addAttribute("recipes",recipeService.getRecipes());
         return "index";
     }
+
+
+    @RequestMapping({"categories","categories.html","/categories"})
+    public String getCategories(Model model){
+        model.addAttribute("categories",catergoryService.getCategories());
+        return "categories";
+    }
+
 }

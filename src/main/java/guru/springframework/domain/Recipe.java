@@ -1,6 +1,8 @@
 package guru.springframework.domain;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,9 +16,12 @@ public class Recipe {
     private String description;
     private Integer prepTime;
     private Integer cookTime;
-    private String servings;
+    private Integer  servings;
     private String source;
     private String url;
+
+    @Lob
+    private String directions;
 
     @Lob
     private Byte[] image;
@@ -25,7 +30,7 @@ public class Recipe {
     private  Notes notes;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     @Enumerated(value = EnumType.STRING)
     private  Difficulty difficulty;
@@ -35,7 +40,24 @@ public class Recipe {
         joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories;
+    private Set<Category> categories=new HashSet<>();
+
+
+    public void setNotes(Notes notes) {
+        if (notes != null) {
+            this.notes = notes;
+            notes.setRecipe(this);
+        }
+    }
+
+    public Recipe addIngredient(Ingredient ingredient){
+        ingredient.setRecipe(this);
+        this.ingredients.add(ingredient);
+        return this;
+    }
+
+
+
 
     public Set<Ingredient> getIngredients() {
         return ingredients;
@@ -93,11 +115,11 @@ public class Recipe {
         this.cookTime = cookTime;
     }
 
-    public String getServings() {
+    public Integer getServings() {
         return servings;
     }
 
-    public void setServings(String servings) {
+    public void setServings(Integer servings) {
         this.servings = servings;
     }
 
@@ -117,6 +139,14 @@ public class Recipe {
         this.url = url;
     }
 
+    public String getDirections() {
+        return directions;
+    }
+
+    public void setDirections(String directions) {
+        this.directions = directions;
+    }
+
     public Byte[] getImage() {
         return image;
     }
@@ -129,7 +159,22 @@ public class Recipe {
         return notes;
     }
 
-    public void setNotes(Notes notes) {
-        this.notes = notes;
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", prepTime=" + prepTime +
+                ", cookTime=" + cookTime +
+                ", servings=" + servings +
+                ", source='" + source + '\'' +
+                ", url='" + url + '\'' +
+                ", directions='" + directions + '\'' +
+                ", image=" + Arrays.toString(image) +
+                ", notes=" + notes +
+                ", ingredients=" + ingredients +
+                ", difficulty=" + difficulty +
+                ", categories=" + categories +
+                '}';
     }
 }
