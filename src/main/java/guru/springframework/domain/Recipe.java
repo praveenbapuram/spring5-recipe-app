@@ -56,9 +56,6 @@ public class Recipe {
         return this;
     }
 
-
-
-
     public Set<Ingredient> getIngredients() {
         return ingredients;
     }
