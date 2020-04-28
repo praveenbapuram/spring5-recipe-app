@@ -48,7 +48,7 @@ public class Recipe {
     private Set<Category> categories=new HashSet<>();
 
 
-    public void setNotes(Notes notes) {
+   public void setNotes(Notes notes) {
         if (notes != null) {
             this.notes = notes;
             notes.setRecipe(this);
@@ -59,5 +59,20 @@ public class Recipe {
         ingredient.setRecipe(this);
         this.ingredients.add(ingredient);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", prepTime=" + prepTime +
+                ", cookTime=" + cookTime +
+                ", servings=" + servings +
+                ", source='" + source + '\'' +
+                ", url='" + url + '\'' +
+                ", directions='" + directions + '\'' +
+                ", difficulty=" + difficulty +
+                '}';
     }
 }
